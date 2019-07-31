@@ -16,16 +16,19 @@ const AppHeader = () => {
 };
 
 const SearchPanel = () => {
-    return <input placeholder="Search"/>
+    const placeholderText = "Type to Search"
+    const searchStyle = {
+        fontSize: '20px'
+    };
+    return <input
+        placeholder={placeholderText}
+        style={searchStyle}
+    />
 };
 
 const App = () => {
-    const isLogged = false;
-    const logged = "Welcome back";
-    const unLogged = "Please Log in";
     return (
         <div>
-            {isLogged ? logged : unLogged}
             <AppHeader/>
             <SearchPanel/>
             <TodoList/>
