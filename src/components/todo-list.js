@@ -3,9 +3,12 @@ import TodoListItem from './todo-list-item'
 const TodoList = ({ data }) => {
 
     const list = data.map((el) => {
+
+        const {id, ...elProps} = el;
+
         return (
-            <li>
-                <TodoListItem {... el} />
+            <li key={id}>
+                <TodoListItem {...elProps} />
             </li>
         );
     });
