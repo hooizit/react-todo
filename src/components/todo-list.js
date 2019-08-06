@@ -5,10 +5,7 @@ const TodoList = ({ data }) => {
     const list = data.map((el) => {
         return (
             <li>
-                <TodoListItem
-                    label={el.label}
-                    important={el.important}
-                    />
+                <TodoListItem {... el} />
             </li>
         );
     });
