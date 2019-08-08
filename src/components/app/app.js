@@ -19,7 +19,8 @@ export default class App extends Component {
             this.createTodoItem('Make Awesome App'),
             this.createTodoItem('Have a lunch')
         ],
-        search: ''
+        search: '',
+        filter: 'active'
     };
 
     createTodoItem(label) {
@@ -93,22 +94,40 @@ export default class App extends Component {
         });
     };
 
-    filter = (data, val) => {
-        if (val === 0) {
+    search = (data, search) => {
+        if (search === 0) {
             return data
         }
         return data.filter(el => el.label
-            .toLowerCase().indexOf(val.toLowerCase()) > -1);
+            .toLowerCase().indexOf(search.toLowerCase()) > -1);
     };
 
     onSearch = (search) => {
         this.setState({ search })
     };
 
-    render() {
-        const { todoData, search } = this.state;
+    filter = (data, filter) => {
+        switch (filter) {
+            case 'all':
+                return data;
+            case 'active':
+                return data.filter(el => !el.done);
+            case 'done':
+                return data.filter(el => el.done);
+            default:
+                return data;
+        }
+    };
 
-        const filtered = this.filter(todoData, search);
+    onFilter = (filter) => {
+        this.setState({ filter })
+    };
+
+    render() {
+        const { todoData, search, filter } = this.state;
+
+        const filtered = this.filter(
+            this.search(todoData, search), filter);
         const doneCount = todoData
             .filter(el => el.done).length;
         const todoCount = todoData.length - doneCount;
@@ -118,7 +137,10 @@ export default class App extends Component {
                 <AppHeader toDo={todoCount} done={doneCount} />
                 <div className="top-panel d-flex">
                     <SearchPanel onSearch={this.onSearch}/>
-                    <ItemStatusFilter />
+                    <ItemStatusFilter
+                        filter={filter}
+                        onFilter={this.onFilter}
+                    />
                 </div>
                 <TodoList
                     data={filtered}
